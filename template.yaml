@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: shell.
+
+Resources:
+  # https://docs.aws.amazon.com/ja_jp/serverless-application-model/latest/developerguide/serverless-sam-cli-layers.html
+  ShellFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: function.handler
+      Runtime: ruby2.5
+      FunctionName: shell-func
+      CodeUri: ./shell-func
+      Timeout: 10
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /shell
+            Method: get
+
+Outputs:
+  MySQLFunction:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/shell"
